@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning to Plan on Graphs of Convex Sets: Accelerating Mixed Discrete-and-Continuous Motion Planning</title>
+  <style>
+    :root {
+      --text: #1a1a1a;
+      --muted: #444;
+      --link: #1a73e8;
+      --column: min(720px, 92vw);
+      --content-wide: min(1280px, 98vw);
+      --video-width: min(1120px, 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .wrap {
+      max-width: var(--column);
+      margin: 0 auto;
+      padding: 3.5rem 1.25rem 0;
+    }
+
+    .content-wide {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: 3rem 1.25rem 2rem;
+    }
+
+    .content-wide.bibtex-section {
+      padding-top: 1rem;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    h1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: clamp(1.55rem, 4.2vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.25rem;
+      line-height: 1.25;
+    }
+
+    h1 .title-line {
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .authors {
+      font-size: clamp(0.78rem, 1.1vw + 0.74rem, 1rem);
+      line-height: 1.65;
+      margin: 0 0 1rem;
+      color: var(--link);
+      white-space: nowrap;
+    }
+
+    .authors-tail {
+      white-space: nowrap;
+    }
+
+    .authors a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .authors a:hover {
+      text-decoration: underline;
+    }
+
+    .meta {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .email {
+      font-size: 0.92rem;
+      margin: 0.25rem 0 0;
+    }
+
+    .email + .meta {
+      margin-top: 0.25rem;
+    }
+
+    .email a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .email a:hover {
+      text-decoration: underline;
+    }
+
+    sup {
+      font-size: 0.72em;
+    }
+
+    .resource-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .resource-links a {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid #222;
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .resource-links a:hover {
+      background: #222;
+      color: #fff;
+    }
+
+    main {
+      margin-top: 0;
+    }
+
+    .section-heading {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-align: center;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .results-title {
+      font-size: 2.1rem;
+      margin: 0 0 2rem;
+    }
+
+    .demo-section {
+      margin: 0 0 2.75rem;
+    }
+
+    .demo-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .demo-section-title {
+      font-size: 1.5rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .demo-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.75rem;
+    }
+
+    .demo {
+      width: var(--video-width);
+      margin: 0 auto;
+    }
+
+    .demo-video {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      border: 2px solid #000;
+      border-radius: 2px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .demo-video.square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .demo video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #111;
+    }
+
+    .demo figcaption {
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .bibtex-section {
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .bibtex-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      text-align: left;
+    }
+
+    .bibtex pre {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      background: #ececec;
+      border: none;
+      border-radius: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #222;
+      text-align: left;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .bibtex code {
+      font-family: inherit;
+    }
+
+    @media (max-width: 640px) {
+      .demo-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      h1 .title-line,
+      .authors {
+        white-space: normal;
+      }
+
+      .authors {
+        text-wrap: balance;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>
+        <span class="title-line">Learning to Plan on Graphs of Convex Sets:</span>
+        <span class="title-line">Accelerating Mixed Discrete-and-Continuous</span>
+        <span class="title-line">Motion Planning</span>
+      </h1>
+      <p class="authors">
+        <a href="https://trivediana.github.io/" rel="noopener noreferrer">Ananya Trivedi</a><sup>1,(✉︎)</sup>,
+        <a href="https://prajapatisarvesh.github.io/" rel="noopener noreferrer">Sarvesh Prajapati</a><sup>1</sup>,
+        <a href="https://khalid2696.github.io/" rel="noopener noreferrer">Mohamed Khalid M Jaffar</a><sup>2</sup>,
+        <a href="https://zhexin1904.github.io/" rel="noopener noreferrer">Zhexin Xu</a><sup>1</sup>,
+        <span class="authors-tail">
+          <a href="https://david-m-rosen.github.io/" rel="noopener noreferrer">David Rosen</a><sup>1</sup>,
+          <a href="https://coe.northeastern.edu/people/padir-taskin/" rel="noopener noreferrer">Taşkın Padır</a><sup>1</sup>
+        </span>
+      </p>
+      <p class="meta"><sup>1</sup> Northeastern University, Boston, MA 02115, USA</p>
+      <p class="email">
+        <a href="mailto:trivedi.ana@northeastern.edu">trivedi.ana@northeastern.edu</a>
+      </p>
+      <p class="meta"><sup>2</sup> University of Maryland, College Park, MD 20742, USA</p>
+      <div class="resource-links">
+        <a href="#" rel="noopener noreferrer">ArXiv</a>
+        <a href="https://github.com/RIVeR-Lab/neural-graphs-of-convex-sets" rel="noopener noreferrer">Code</a>
+      </div>
+    </header>
+  </div>
+
+  <main class="content-wide">
+      <h2 class="section-heading results-title">Results</h2>
+
+      <section class="demo-section">
+        <h3 class="section-heading demo-section-title">Obstacle-Free Motion Planning</h3>
+        <div class="demo-row">
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Quadrotor.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>3D Quadrotor Navigating a 25m X 25m Building</figcaption>
+          </figure>
+          <figure class="demo">
+            <div class="demo-video square">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Pick%20and%20Place.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Planning in Configuration Space using 7-DOF KUKA IIWA</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h3 class="section-heading demo-section-title">Long-Horizon Planning Through Contact</h3>
+        <div class="demo-row">
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Box%20Pushing.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Pushing a Box Into a Goal Configuration</figcaption>
+          </figure>
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Tee%20Pushing.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Pushing a Tee Into a Goal Configuration</figcaption>
+          </figure>
+        </div>
+      </section>
+  </main>
+
+  <div class="content-wide bibtex-section">
+      <h2 class="bibtex-title">BibTeX</h2>
+      <pre><code>@ARTICLE{
+trivedi_cc_mpc,
+author={Trivedi, Ananya and Prajapati, Sarvesh and Zolotas, Mark and Everett, Michael and Padır, Taşkın},
+journal={IEEE Robotics and Automation Letters},
+title={Chance-Constrained Convex MPC for Robust Quadruped Locomotion Under Parametric and Additive Uncertainties},
+year={2025},
+volume={10},
+number={8},
+pages={8388-8395},
+keywords={Quadrupedal robots;Uncertainty;Robots;Payloads;Foot;Legged locomotion;Stochastic processes;Real-time systems;Trajectory;Optimization;Robot sensing systems},
+doi={10.1109/LRA.2025.3585315}
+}</code></pre>
+  </div>
+</body>
+</html>
