@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neural Graphs of Convex Sets: Towards Real-Time Mixed Discrete-and-Continuous Motion Planning</title>
+  <title>Learning to Plan on Graphs of Convex Sets: Accelerating Mixed Discrete-and-Continuous Motion Planning</title>
   <style>
     :root {
       --text: #1a1a1a;
@@ -54,13 +54,11 @@
       margin: 0 0 1.25rem;
       line-height: 1.25;
       text-align: center;
-      transform: translateX(clamp(-1.65rem, -4.25vw, -0.95rem));
     }
 
     h1 .title-line-1 {
       white-space: nowrap;
       max-width: 100%;
-      transform: translateX(clamp(1.35rem, 3.75vw, 2.5rem));
     }
 
     @media (max-width: 480px) {
@@ -72,11 +70,21 @@
     h1 .title-line-2 {
       white-space: nowrap;
       max-width: 100%;
-      transform: translateX(clamp(1.25rem, 3.5vw, 3rem));
     }
 
     @media (max-width: 520px) {
       h1 .title-line-2 {
+        white-space: normal;
+      }
+    }
+
+    h1 .title-line-3 {
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    @media (max-width: 520px) {
+      h1 .title-line-3 {
         white-space: normal;
       }
     }
@@ -143,8 +151,9 @@
   <div class="wrap">
     <header>
       <h1>
-        <span class="title-line-1">Neural Graphs of Convex Sets: Towards&nbsp;Real-Time</span>
-        <span class="title-line-2">Mixed Discrete-and-Continuous Motion&nbsp;Planning</span>
+        <span class="title-line-1">Learning to Plan on Graphs of Convex Sets:</span>
+        <span class="title-line-2">Accelerating Mixed Discrete-and-Continuous</span>
+        <span class="title-line-3">Motion Planning</span>
       </h1>
       <p class="authors">
         <a href="https://trivediana.github.io/" rel="noopener noreferrer">Ananya Trivedi</a><sup>1,(✉︎)</sup>,
