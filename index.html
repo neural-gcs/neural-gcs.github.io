@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accelerating Mixed Discrete-Continuous Motion Planning via Neural Graphs of Convex Sets</title>
+  <style>
+    .citation {
+      padding-bottom: 3.5rem;
+    }
+
+    .citation pre {
+      background: #f6f6f6;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin: 0;
+    }
+    :root {
+      --text: #1a1a1a;
+      --muted: #444;
+      --link: #1a73e8;
+      --column: min(720px, 92vw);
+      --content-wide: min(1280px, 98vw);
+      --video-width: min(1120px, 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .wrap {
+      max-width: var(--column);
+      margin: 0 auto;
+      padding: 3.5rem 1.25rem 0;
+    }
+
+    .content-wide {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: 3rem 1.25rem 2rem;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    h1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: clamp(1.55rem, 4.2vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.25rem;
+      line-height: 1.25;
+    }
+
+    h1 .title-line {
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .authors {
+      font-size: clamp(0.78rem, 1.1vw + 0.74rem, 1rem);
+      line-height: 1.65;
+      margin: 0 0 1rem;
+      color: var(--link);
+      white-space: nowrap;
+    }
+
+    .authors-tail {
+      white-space: nowrap;
+    }
+
+    .authors a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .authors a:hover {
+      text-decoration: underline;
+    }
+
+    .meta {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .email {
+      font-size: 0.92rem;
+      margin: 0.25rem 0 0;
+    }
+
+    .email + .meta {
+      margin-top: 0.25rem;
+    }
+
+    .email a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .email a:hover {
+      text-decoration: underline;
+    }
+
+    sup {
+      font-size: 0.72em;
+    }
+
+    .resource-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .resource-links a {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid #222;
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .resource-links a:hover {
+      background: #222;
+      color: #fff;
+    }
+
+    .abstract {
+      margin-top: 3rem;
+    }
+
+    .abstract-title {
+      font-size: 2.1rem;
+      margin: 0 0 1rem;
+    }
+
+    .abstract p {
+      margin: 0 0 1rem;
+      text-align: justify;
+      hyphens: auto;
+      color: var(--muted);
+    }
+
+    .abstract p:last-child {
+      margin-bottom: 0;
+    }
+
+    main {
+      margin-top: 0;
+    }
+
+    .section-heading {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-align: center;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .results-title {
+      font-size: 2.1rem;
+      margin: 0 0 2rem;
+    }
+
+    .demo-section {
+      margin: 0 0 2.75rem;
+    }
+
+    .demo-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .demo-section-title {
+      font-size: 1.5rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .demo-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.75rem;
+    }
+
+    .demo {
+      width: var(--video-width);
+      margin: 0 auto;
+    }
+
+    .demo-video {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      border: 2px solid #000;
+      border-radius: 2px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .demo-video.square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .demo video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #111;
+    }
+
+    .demo figcaption {
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .demo-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      h1 .title-line,
+      .authors {
+        white-space: normal;
+      }
+
+      .authors {
+        text-wrap: balance;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>
+        <span class="title-line">Accelerating Mixed Discrete-Continuous Motion</span>
+        <span class="title-line">Planning via Neural Graphs of Convex Sets</span>
+      </h1>
+      <p class="authors">Anonymous Authors</p>
+      <p class="meta">Paper under double-blind review</p>
+      <div class="resource-links">
+        <a href="https://anonymous.4open.science/r/neural-graphs-of-convex-sets-E837/" rel="noopener noreferrer">Code</a>
+      </div>
+    </header>
+
+    <section class="abstract">
+      <h2 class="section-heading abstract-title">Abstract</h2>
+      <p>
+        Motion planning problems such as collision-free navigation and contact-rich manipulation can be
+        naturally formulated as optimization problems that couple discrete decisions with continuous
+        trajectories. The Graphs of Convex Sets (GCS) framework offers a practical solution to these
+        problems. It represents discrete decisions as nodes of a graph and encodes continuous trajectories
+        in the edges connecting them. However, the resulting optimization subproblems can become
+        computationally prohibitive for online replanning.
+      </p>
+      <p>
+        In this work, we propose a learning-based strategy to mitigate this limitation. Specifically, we
+        replace the costly convex relaxation step required by nominal GCS with a single forward pass
+        through a Graph Attention Network that predicts a set of highly probable candidate paths through
+        the graph. A lightweight ranking network then orders these candidates by their estimated
+        trajectory cost. Evaluating them in this order, we terminate our search early while still
+        recovering a near-optimal motion plan. We validate the resulting pipeline across diverse robotic
+        tasks, including collision-free motion planning for a 3D quadrotor and a 7-DoF manipulator, and
+        planning through contact for planar pushing. Across both convex and non-convex cost and constraint
+        settings, our approach yields up to two orders of magnitude speedup over nominal GCS while
+        maintaining a 100% success rate, at the cost of some suboptimality in the recovered solutions.
+      </p>
+    </section>
+  </div>
+
+  <main class="content-wide">
+      <h2 class="section-heading results-title">Results</h2>
+
+      <section class="demo-section">
+        <h3 class="section-heading demo-section-title">Obstacle-Free Motion Planning</h3>
+        <div class="demo-row">
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Quadrotor.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>3D Quadrotor Navigating a 25m X 25m Building</figcaption>
+          </figure>
+          <figure class="demo">
+            <div class="demo-video square">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Pick%20and%20Place.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Planning in Configuration Space using 7-DOF KUKA IIWA</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h3 class="section-heading demo-section-title">Long-Horizon Planning Through Contact</h3>
+        <div class="demo-row">
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Box%20Pushing.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Pushing a Box Into a Goal Configuration</figcaption>
+          </figure>
+          <figure class="demo">
+            <div class="demo-video">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src="Demo%20Videos/Tee%20Pushing.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Pushing a Tee Into a Goal Configuration</figcaption>
+          </figure>
+        </div>
+      </section>
+  </main>
+  <div class="content-wide citation">
+    <h2 class="section-heading results-title">Citation</h2>
+    <pre><code>@article{anonymous2026accelerating,
+  title={Accelerating Mixed Discrete-Continuous Motion Planning via Neural Graphs of Convex Sets},
+  author={Anonymous Authors},
+  note={Under review},
+  year={2026}
+}</code></pre>
+  </div>
+</body>
+</html>
